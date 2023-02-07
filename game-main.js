@@ -38,41 +38,33 @@ const game = {
 }
 
 
-//Functions
-
+/* 
+Functions
+*/
 
 function clear() {
     context.clearRect(0, 0, game.width, game.height);
 }
 
-function everyInterval(n) {
-    if ((game.frameNo /n) % 1 == 0) {
-        return true;
-    }
-    return false;
-}
+//main running game function
 
 function updateGameArea() {
-    let x, y;
     for (let i = 0; i < food.length; i++) {
         if (blob.crashWith(food[i])) {
             game.stop();
             return;
         }
     }
+    blob.boundary();
     game.clear();
-    game.frameNo += 1;
-    if (game.frameNo == 1 || everyInterval(60)) {
-        food.push(new Food('#FF6D00', randomX(), randomY()));
-    }
-    for (let i = 0; i < food.length; i++) {
-        food[i].update();
-    }
+    makeFood();
     score.text = `Score: ${food.length}`;
     score.update();
     blob.newPos();
     blob.update();
 }
+
+//moving functions
 
 function moveUp() {
     blob.speedY = -4; 
@@ -94,15 +86,12 @@ function moveRight() {
     blob.speedY = 0; 
 }
 
-function stopMove() {
-    blob.speedX = 0;
-    blob.speedY =0;
-}
-
 function growBlob() {
     blob.height =  blob.height + 5;
     blob.width = blob.width + 5;
 }
+
+// Generate random X and Y coordinates
 
 function randomX() {
     return Math.floor(Math.random() * (game.width + 10) + 10);
@@ -110,6 +99,25 @@ function randomX() {
 
 function randomY() {
     return Math.floor(Math.random() * (game.height + 10) + 10);
+}
+
+//Food generator function
+
+function everyInterval(n) {
+    if ((game.frameNo /n) % 1 == 0) {
+        return true;
+    }
+    return false;
+}
+
+function makeFood() {
+     game.frameNo += 1;
+    if (game.frameNo == 1 || everyInterval(60)) {
+        food.push(new Food('#FF6D00', randomX(), randomY()));
+    }
+    for (let i = 0; i < food.length; i++) {
+        food[i].update();
+    }
 }
 
 // Constuctor functions to make game pieces
@@ -144,11 +152,15 @@ function Blob(width, height, color, x, y) {
         let crash = true;
         if (blobBottom < objTop || blobTop > objBottom || blobRight < objLeft || blobLeft > objRight) {
           crash = false;
-        } else if (obj.left > 0 || objRight > canvas.witdth - this.width || objTop < 0 || objBottom > canvas.width - this.height) {
-            crash = true;
         }
         return crash;
-    }    
+    }
+    
+    this.boundary = function() {
+        if(this.x < 0 || this.x + this.width > canvas.width - this.width || this.y < 0 || this.y + this.height > canvas.height- this.height) {
+            game.stop();
+        }
+    }
 }
 
 function Food(color, x, y) {
