@@ -1,5 +1,12 @@
 body {
 width: 100%;
+background-color: #973AA8;
+}
+
+h1 {
+    font-family: 'Permanent Marker', cursive;
+    font-size: 55px;
+    
 }
 
 canvas {
