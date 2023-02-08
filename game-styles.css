@@ -5,11 +5,77 @@ background-color: #973AA8;
 
 h1 {
     font-family: 'Permanent Marker', cursive;
-    font-size: 55px;
+    font-size: 3.5rem;
+    width: 60%;
+    margin: 2rem auto;
+}
+
+h2 {
+    font-family: 'Permanent Marker', cursive;
+    font-size: 2rem;
+    text-align: center;
+}
+
+p {
+    font-family:'Permanent Marker', cursive;
+    text-align: center;
+    line-height: 2rem;
+
+}
+
+
+canvas {
+    border: solid 5px #47126B;
+    margin: 0 5.5rem;
+    background-color: #AC46A1;
+    display: none;
+}
+
+#start-screen {
+    width: 500px;
+    height: 500px;
+    left: 6rem;
+    opacity: 1;
+    border: solid 5px #47126B;
+    background-color: #D55D92;
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+.instructions {
+    border: solid 5px #AC46A1;
+    margin-top: 3rem;
+    border-radius: 6px;
+    width: 50%;
     
 }
 
-canvas {
-    border: solid 1px black;
-    margin: 1rem auto;
+#start-button {
+    height: 3rem;
+    width: 7rem;
+    font-family: 'Permanent Marker', cursive;
+    background: #6411AD;
+    box-shadow: rgba(0, 0, 0, 0.1) 1px 2px 4px;
+    border-radius: 6px;
+    border: 5px solid #AC46A1;
+    cursor: pointer;
 }
+
+    
+#btn-box {
+    margin: 2rem auto;
+    width: 50%;
+}
+    
+#start-button:hover,
+#start-button:active {
+background-color: #571089;
+color: #FF4742;
+}
+
+#start-button:active {
+opacity: .5;
+}
+

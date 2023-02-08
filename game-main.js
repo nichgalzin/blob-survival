@@ -1,25 +1,27 @@
 // Global Variables
-const canvas = document.createElement('canvas');
-const context = canvas.getContext('2d');
 let blob, score;
-const food = [];
+const obstacle = [];
 
+// Dom Access
+
+const canvas = document.querySelector('canvas');
+const context = canvas.getContext('2d');
+const startButton = document.getElementById('start-button');
+const startScreen = document.getElementById('start-screen');
 
 // Game object
 
 const game = {
 
     bodyEl: document.querySelector('body'),
-    width: 600,
-    height: 600,
+    width: 500,
+    height: 500,
 
     canvasSetup() {
-        canvas.width = 600;
-        canvas.height = 600;
-        canvas.style.background = '#AC46A1';
-        this.bodyEl.append(canvas);
+        canvas.width = this.width;
+        canvas.height = this.height;
         this.frameNo = 0;
-        score = new Score('30px Overpass', 450, 50);
+        score = new Score('24px Overpass', this.width - 130, 50);
         this.interval = setInterval(updateGameArea, 20);
     },
 
@@ -37,32 +39,29 @@ const game = {
     }
 }
 
+//main running game function
+
+function updateGameArea() {
+    checkIfCrash()
+    blob.boundaryCollide();
+    game.clear();
+    placeObstacle();
+    score.text = `Score: ${obstacle.length}`;
+    score.update();
+    blob.newPos();
+    blob.update();
+}
 
 /* 
 Functions
 */
 
+//clear game after each interval
+
 function clear() {
     context.clearRect(0, 0, game.width, game.height);
 }
 
-//main running game function
-
-function updateGameArea() {
-    for (let i = 0; i < food.length; i++) {
-        if (blob.crashWith(food[i])) {
-            game.stop();
-            return;
-        }
-    }
-    blob.boundary();
-    game.clear();
-    makeFood();
-    score.text = `Score: ${food.length}`;
-    score.update();
-    blob.newPos();
-    blob.update();
-}
 
 //moving functions
 
@@ -86,22 +85,17 @@ function moveRight() {
     blob.speedY = 0; 
 }
 
-function growBlob() {
-    blob.height =  blob.height + 5;
-    blob.width = blob.width + 5;
-}
-
 // Generate random X and Y coordinates
 
 function randomX() {
-    return Math.floor(Math.random() * (game.width + 10) + 10);
+    return Math.floor(Math.random() * (game.width + 10));
 }
 
 function randomY() {
-    return Math.floor(Math.random() * (game.height + 10) + 10);
+    return Math.floor(Math.random() * (game.height + 10));
 }
 
-//Food generator function
+//obstacle generator function
 
 function everyInterval(n) {
     if ((game.frameNo /n) % 1 == 0) {
@@ -110,13 +104,22 @@ function everyInterval(n) {
     return false;
 }
 
-function makeFood() {
+function placeObstacle() {
      game.frameNo += 1;
-    if (game.frameNo == 1 || everyInterval(60)) {
-        food.push(new Food('#FF6D00', randomX(), randomY()));
+    if (game.frameNo == 1 || everyInterval(50)) {
+        obstacle.push(new Obstacle('#FF4742', randomX(), randomY()));
     }
-    for (let i = 0; i < food.length; i++) {
-        food[i].update();
+    for (let i = 0; i < obstacle.length; i++) {
+        obstacle[i].update();
+    }
+}
+
+function checkIfCrash() {
+    for (let i = 0; i < obstacle.length; i++) {
+        if (blob.crashWith(obstacle[i])) {
+            game.stop();
+            return;
+        }
     }
 }
 
@@ -156,14 +159,14 @@ function Blob(width, height, color, x, y) {
         return crash;
     }
     
-    this.boundary = function() {
-        if(this.x < 0 || this.x + this.width > canvas.width - this.width || this.y < 0 || this.y + this.height > canvas.height- this.height) {
+    this.boundaryCollide = function() {
+        if(this.x == 0 || this.x + this.width > canvas.width || this.y == 0 || this.y + this.height > canvas.height) {
             game.stop();
         }
     }
 }
 
-function Food(color, x, y) {
+function Obstacle(color, x, y) {
     this.width = 10;
     this.height = 10;
     this.x = x;
@@ -191,6 +194,8 @@ function Score(font, x, y) {
 
 //Event Listners
 
+
+//Arrow & WASD movement controls
 window.addEventListener('keydown', (e) => {
     e.preventDefault();
 
@@ -217,8 +222,15 @@ window.addEventListener('keydown', (e) => {
      }   
 })
 
+// Start Button event listenr and game start
+
+startButton.addEventListener('click', () => {
+    game.startGame();
+    startScreen.style.display = 'none';
+    canvas.style.display = 'block';
+})
+
 
 
 //Start game function
 
-game.startGame();
