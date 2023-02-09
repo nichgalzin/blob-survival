@@ -12,18 +12,27 @@
 <body>
     <div>
         <h1>Blob Survival</h1>
-        <canvas>
-        </canvas>
+        <div class="container">
+            <canvas></canvas>
+        </div>
     </div>
-    <div id="start-screen">
+    <div id="start-screen" class="screen">
         <div class="instructions">
             <h2>Stay alive</h2>
             <p>Dots and borders = death!</p>
-            <p>Use arrow keys or<br> WASD to move</p>
-            <div id="btn-box">
-                <button id="start-button" role="button">Start game</button>
+            <p>Use arrow or<br> WASD keys to move</p>
+            <div class="btn-box">
+                <button id="start-button" class="button" role="button">Start game</button>
             </div>
         </div> 
     </div>
-    <div class="end-screen"></div>
+    <div id="end-screen" class="screen">
+        <div class="instructions">
+            <h2>Game Over</h2>
+                <h2 id="score"></h2>
+                <div class="btn-box">
+                    <button id="end-button" class="button" role="button">Try again!</button>
+                </div>
+        </div>
+    </div>
 </html>

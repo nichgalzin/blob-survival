@@ -8,6 +8,9 @@ const canvas = document.querySelector('canvas');
 const context = canvas.getContext('2d');
 const startButton = document.getElementById('start-button');
 const startScreen = document.getElementById('start-screen');
+const endScreen = document.getElementById('end-screen');
+const displayScore = document.getElementById('score');
+const endButton = document.getElementById('end-button');
 
 // Game object
 
@@ -62,7 +65,6 @@ function clear() {
     context.clearRect(0, 0, game.width, game.height);
 }
 
-
 //moving functions
 
 function moveUp() {
@@ -110,20 +112,40 @@ function placeObstacle() {
         obstacle.push(new Obstacle('#FF4742', randomX(), randomY()));
     }
     for (let i = 0; i < obstacle.length; i++) {
+       obstacle[i].x += upOrDown();
+       obstacle[i].y += upOrDown();
+       
         obstacle[i].update();
     }
 }
+
+// Functions to check for crash conditions
 
 function checkIfCrash() {
     for (let i = 0; i < obstacle.length; i++) {
         if (blob.crashWith(obstacle[i])) {
             game.stop();
+            endScreen.style.display = 'flex';
+            canvas.style.display = 'none';
+            displayScore.textContent = `Your ${score.text}`;
             return;
         }
     }
 }
 
-// Constuctor functions to make game pieces
+// Generate a random direction for obstacle movement
+
+function upOrDown() {
+    let x = Math.round(Math.random())
+    console.log(x);
+    if (x === 1) {
+        return 3;
+    } else {
+        return -3;
+    }
+}
+
+// Constuctor functions for making game pieces
 
 function Blob(width, height, color, x, y) {
     this.width = width;
@@ -170,11 +192,18 @@ function Obstacle(color, x, y) {
     this.width = 10;
     this.height = 10;
     this.x = x;
-    this.y = y;   
+    this.y = y;
+    speedX = 0;
+    speedY = 0;   
 
     this.update = function() {
         context.fillStyle = color;
         context.fillRect(this.x, this.y, this.width, this.height);
+    }
+
+    this.newPos = function() {
+        this.x += this.speedX;
+        this.y += this.speedY;
     }
 }
 
@@ -230,7 +259,12 @@ startButton.addEventListener('click', () => {
     canvas.style.display = 'block';
 })
 
+endButton.addEventListener('click', () => {
+    document.location.reload();
+})
+
 
 
 //Start game function
 
+// game.startGame();
