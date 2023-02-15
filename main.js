@@ -241,11 +241,12 @@ window.addEventListener('keydown', (e) => {
          break;
        case "KeyA":
        case "ArrowLeft":
+        //hand "left"
          moveLeft();
          break;
        case "KeyD":
        case "ArrowRight":
-         // Handle "turn right"
+         // Handle "right"
          moveRight();
          break;
      }   
