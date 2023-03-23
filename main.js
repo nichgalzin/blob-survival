@@ -90,11 +90,11 @@ function moveRight() {
 // Generate random X and Y coordinates
 
 function randomX() {
-    return Math.floor(Math.random() * (game.width + 10));
+    return Math.floor(Math.random() * (game.width - 30));
 }
 
 function randomY() {
-    return Math.floor(Math.random() * (game.height + 10));
+    return Math.floor(Math.random() * (game.height - 30));
 }
 
 //obstacle generator function
@@ -136,8 +136,8 @@ function checkIfCrash() {
 // Generate a random direction for obstacle movement
 
 function upOrDown() {
-    let x = Math.round(Math.random())
-    console.log(x);
+    let x = Math.round(Math.random());
+    
     if (x === 1) {
         return 3;
     } else {
@@ -184,6 +184,9 @@ function Blob(width, height, color, x, y) {
     this.boundaryCollide = function() {
         if(this.x == 0 || this.x + this.width > canvas.width || this.y == 0 || this.y + this.height > canvas.height) {
             game.stop();
+            endScreen.style.display = 'flex';
+            canvas.style.display = 'none';
+            displayScore.textContent = `Your ${score.text}`;
         }
     }
 }
