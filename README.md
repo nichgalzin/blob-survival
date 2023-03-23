@@ -19,4 +19,5 @@ Find the tutorial I followed [here](https://www.w3schools.com/graphics/game_canv
 
 ## Fonts and colours:
 Font: [Permanant Marker](https://fonts.google.com/specimen/Permanent+Marker?query=perm)
+<br>
 See the colour palette I used [here](https://coolors.co/973aa8-47126b-ac46a1-d55d92-ff4742)  
